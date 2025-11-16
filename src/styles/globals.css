@@ -1,0 +1,303 @@
+@import "tailwindcss"; /* =============================== Futuristic / Clean Theme Tokens - High contrast, neon accents, soft glass cards =============================== */ /* --- Core tokens (light mode) --- */
+:root {
+  --accent-1: 195 100% 42%;
+  --accent-2: 260 80% 52%;
+  --accent-3: 160 80% 42%;
+  --background: 210 25% 98%;
+  --foreground: 220 20% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 20% 10%;
+  --muted: 210 20% 94%;
+  --muted-foreground: 220 10% 30%;
+  --border: 214 25% 85%;
+  --input: 214 25% 90%;
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(34, 197, 94, 0.06);
+  --radius: 0.875rem;
+  --metro-red: 0 80% 55%;
+  --metro-blue: 210 90% 50%;
+  --metro-yellow: 45 95% 55%;
+  --metro-green: 140 70% 40%;
+} /* --- Dark mode overrides --- */
+.dark {
+  --accent-1: 190 100% 47%;
+  --accent-2: 270 78% 60%;
+  --accent-3: 150 72% 48%;
+  --background: 220 25% 5%;
+  --foreground: 210 40% 98%;
+  --card: 220 20% 10%;
+  --card-foreground: 210 40% 98%;
+  --muted: 220 15% 12%;
+  --muted-foreground: 215 20% 75%;
+  --border: 217 26% 16%;
+  --input: 217 26% 14%;
+  --glass-bg: rgba(8, 12, 25, 0.65);
+  --glass-border: rgba(139, 92, 246, 0.12);
+  --metro-red: 0 80% 55%;
+  --metro-blue: 210 100% 60%;
+  --metro-yellow: 45 95% 55%;
+  --metro-green: 140 70% 40%;
+} /* =============================== Base styles =============================== */
+@layer base {
+  html,
+  body,
+  #__next {
+    height: 100%;
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family:
+      Inter,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.05;
+    font-weight: 800;
+    color: hsl(var(--foreground));
+    margin: 0 0 1rem;
+  }
+  h2 {
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: hsl(var(--foreground));
+  }
+  p,
+  span,
+  label,
+  a {
+    color: hsl(var(--foreground));
+  }
+  .text-foreground {
+    color: color-mix(
+      in srgb,
+      hsl(var(--foreground)),
+      white 25%
+    ) !important;
+  }
+  .dark .text-foreground {
+    color: color-mix(
+      in srgb,
+      hsl(var(--foreground)),
+      white 5%
+    ) !important;
+  }
+  .bg-background {
+    background-color: hsl(var(--background)) !important;
+  }
+  .bg-card {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+  }
+  .bg-popover {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+  }
+  .border-border {
+    border-color: hsl(var(--border)) !important;
+  }
+  .bg-muted {
+    background-color: hsl(var(--muted)) !important;
+  }
+  .text-muted {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+  .glass {
+    background: var(--glass-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    border: 1px solid var(--glass-border);
+  }
+  .card,
+  .ui-card,
+  [data-card],
+  .bg-white,
+  .bg-surface {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+    border-radius: var(--radius) !important;
+  }
+  .dialog-content,
+  .modal,
+  .popover,
+  .dropdown-content {
+    background-color: hsl(var(--card)) !important;
+    color: hsl(var(--card-foreground)) !important;
+    border-color: hsl(var(--border)) !important;
+  }
+  .gradient-primary {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent-1)) 0%,
+      hsl(var(--accent-2)) 100%
+    );
+    color: white !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  .gradient-accent {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--accent-2)) 0%,
+      hsl(var(--accent-1)) 100%
+    );
+    color: white !important;
+  }
+  .card,
+  .ui-card {
+    box-shadow: 0 6px 18px rgba(10, 10, 20, 0.06);
+  }
+  .dark .card,
+  .dark .ui-card {
+    box-shadow: 0 8px 28px rgba(2, 6, 20, 0.6);
+  }
+  .hero-title {
+    font-size: clamp(2.75rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.03;
+    color: hsl(var(--foreground));
+    margin-bottom: 0.75rem;
+    text-align: center;
+  }
+  .hero-subtitle {
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+    margin-bottom: 1.75rem;
+  }
+  .badge-foreground {
+    color: hsl(var(--card-foreground)) !important;
+  }
+} /* =============================== Navbar Styles =============================== */
+nav.glass {
+  background: var(--glass-bg);
+  border-bottom: 1px solid
+    color-mix(in srgb, hsl(var(--border)) 80%, transparent);
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+nav.glass > .container {
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
+}
+nav.glass .w-12.h-12 {
+  width: 44px;
+  height: 44px;
+}
+nav.glass h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+nav.glass p {
+  font-size: 0.725rem;
+  margin: 0;
+}
+nav.glass .flex.items-center {
+  gap: 0.5rem;
+}
+nav.glass .btn,
+nav.glass .button,
+nav.glass .gradient-primary {
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  font-size: 0.95rem;
+}
+.dark nav.glass {
+  background-color: rgba(3, 7, 18, 0.94) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  box-shadow: 0 6px 24px rgba(2, 6, 20, 0.6);
+}
+.dark nav.glass,
+.dark nav.glass a,
+.dark nav.glass p,
+.dark nav.glass h3,
+.dark nav.glass .icon,
+.dark nav.glass svg {
+  color: hsl(var(--card-foreground)) !important;
+} /* =============================== Dark Mode Gradient Backgrounds =============================== */
+.dark body,
+.dark .min-h-screen,
+.dark .page-wrapper,
+.dark .main-content {
+  background: linear-gradient(
+    135deg,
+    hsl(220 25% 6%) 0%,
+    hsl(220 25% 10%) 50%,
+    hsl(230 25% 12%) 100%
+  ) !important;
+  background-attachment: fixed;
+  color: hsl(var(--foreground)) !important;
+}
+.dark .bg-gray-800,
+.dark .bg-gray-900,
+.dark .bg-gray-950 {
+  background: linear-gradient(
+    145deg,
+    hsl(220 25% 7%) 0%,
+    hsl(230 25% 12%) 100%
+  ) !important;
+} /* ============================================= Adaptive Muted Background Fix ============================================= */
+.bg-muted-adaptive {
+  background-color: color-mix(
+    in srgb,
+    hsl(var(--muted)),
+    white 30%
+  ) !important;
+}
+.dark .bg-muted-adaptive {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, hsl(var(--muted)), black 15%) 0%,
+    color-mix(in srgb, hsl(var(--muted)), black 25%) 100%
+  ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+} /* ============================================= Metro Line Colors ============================================= */
+.line-red {
+  background-color: #ef4444 !important;
+}
+.line-blue {
+  background-color: #2563eb !important;
+}
+.line-yellow {
+  background-color: #facc15 !important;
+}
+.line-green {
+  background-color: #16a34a !important;
+}
+.line-purple {
+  background-color: #9333ea !important;
+}
+.dark .line-red {
+  background-color: #f87171 !important;
+}
+.dark .line-blue {
+  background-color: #60a5fa !important;
+}
+.dark .line-yellow {
+  background-color: #fde047 !important;
+}
+.dark .line-green {
+  background-color: #4ade80 !important;
+}
+.dark .line-purple {
+  background-color: #c084fc !important;
+}
