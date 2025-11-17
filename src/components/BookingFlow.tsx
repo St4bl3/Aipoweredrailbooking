@@ -1201,7 +1201,7 @@ export function BookingFlow({
                                             <p className="font-bold text-black">
                                               {seat.id}
                                             </p>
-                                            <p className="text-xs text-black">
+                                            <p className="text-xs text-gray-600 dark:text-gray-400">
                                               {seat.type}
                                             </p>
                                           </div>
@@ -1271,7 +1271,7 @@ export function BookingFlow({
                                             <p className="font-bold text-black">
                                               {seat.id}
                                             </p>
-                                            <p className="text-xs text-black">
+                                            <p className="text-xs text-gray-600 dark:text-gray-400">
                                               {seat.type}
                                             </p>
                                           </div>
@@ -1336,7 +1336,7 @@ export function BookingFlow({
                                         <p className="font-bold text-black">
                                           {seat.id}
                                         </p>
-                                        <p className="text-xs text-black">
+                                        <p className="text-xs text-gray-600 dark:text-gray-400">
                                           {seat.type}
                                         </p>
                                       </div>
@@ -1858,13 +1858,6 @@ export function BookingFlow({
                     >
                       <AlertTriangle className="mr-2 h-4 w-4" />
                       Report Issue
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => setCurrentPage("tracking")}
-                    >
-                      <Train className="mr-2 h-4 w-4" />
-                      Track Train
                     </Button>
                   </div>
                 </div>

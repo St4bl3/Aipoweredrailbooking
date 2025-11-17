@@ -1,3 +1,4 @@
+// navbar.tsx
 import {
   Moon,
   Sun,
@@ -10,7 +11,7 @@ import {
   UserCircle,
   X,
 } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useApp } from "../context/AppContext";
 import { Button } from "./ui/button";
 import {
@@ -43,44 +44,73 @@ export function Navbar({
 
   const [showNotifications, setShowNotifications] =
     useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const unreadCount = notifications.filter(
     (n) => !n.read,
   ).length;
 
-  // Scroll hide/show functionality
+  // Scroll hide/show logic
+  const lastScrollY = useRef<number>(0);
+  const ticking = useRef<boolean>(false);
+  const [hidden, setHidden] = useState<boolean>(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    const threshold = 50; // px before hide/show logic starts
+    function onScroll() {
+      if (ticking.current) return;
+      ticking.current = true;
+      window.requestAnimationFrame(() => {
+        const currentY = window.scrollY || window.pageYOffset;
+        const lastY = lastScrollY.current;
 
-      if (currentScrollY < lastScrollY || currentScrollY < 10) {
-        // Scrolling up or at top - show navbar
-        setIsVisible(true);
-      } else if (
-        currentScrollY > lastScrollY &&
-        currentScrollY > 100
-      ) {
-        // Scrolling down and past 100px - hide navbar
-        setIsVisible(false);
-      }
+        // near top -> always show
+        if (currentY <= threshold) {
+          setHidden(false);
+        } else {
+          if (currentY > lastY && currentY > threshold) {
+            // scrolling down
+            setHidden(true);
+          } else if (currentY < lastY) {
+            // scrolling up
+            setHidden(false);
+          }
+        }
 
-      setLastScrollY(currentScrollY);
-    };
+        lastScrollY.current = currentY;
+        ticking.current = false;
+      });
+    }
 
-    window.addEventListener("scroll", handleScroll, {
+    window.addEventListener("scroll", onScroll, {
       passive: true,
     });
-    return () =>
-      window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
+    // The nav itself moves up/down. The blur/backdrop is an absolutely-positioned
+    // element INSIDE the nav but behind the content so only the background is blurred.
     <nav
-      className={`sticky top-0 z-50 navbar-glass border-b border-border/50 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
+      className={`relative sticky top-0 z-50 transform transition-transform duration-300 ease-in-out will-change-transform
+        ${hidden ? "-translate-y-[110%]" : "translate-y-0"}`}
+      aria-hidden={hidden ? "true" : "false"}
     >
+      {/* BACKDROP LAYER: absolute, behind content, pointer-events-none so it doesn't intercept clicks.
+          Uses darkMode to choose light or dark translucent blur. */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div
+          className={
+            // light blur in light mode, dark blur in dark mode:
+            `w-full h-full backdrop-blur-md ${
+              darkMode
+                ? "bg-black/40 border-b border-border/30"
+                : "bg-white/40 border-b border-border/10"
+            }`
+          }
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* CONTENT: sits above the backdrop and is NOT blurred */}
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}

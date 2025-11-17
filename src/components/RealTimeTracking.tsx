@@ -86,7 +86,7 @@ export function RealTimeTracking() {
 
   const handleShareLocation = () => {
     const basePnrLink = `https://irctc.live/track?pnr=${pnr}`;
-    
+
     // Try to get geolocation
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -94,17 +94,24 @@ export function RealTimeTracking() {
         (position) => {
           const { latitude, longitude } = position.coords;
           const linkWithLocation = `${basePnrLink}&lat=${latitude.toFixed(6)}&lng=${longitude.toFixed(6)}`;
-          
+
           // Try clipboard API with fallback
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(linkWithLocation).then(
-              () => {
-                toast.success("📍 Live tracking link with location copied!");
-              },
-              () => {
-                fallbackCopyTextToClipboard(linkWithLocation);
-              }
-            );
+          if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+          ) {
+            navigator.clipboard
+              .writeText(linkWithLocation)
+              .then(
+                () => {
+                  toast.success(
+                    "📍 Live tracking link with location copied!",
+                  );
+                },
+                () => {
+                  fallbackCopyTextToClipboard(linkWithLocation);
+                },
+              );
           } else {
             fallbackCopyTextToClipboard(linkWithLocation);
           }
@@ -113,34 +120,42 @@ export function RealTimeTracking() {
         (error) => {
           console.log("Geolocation denied or error:", error);
           const fallbackLink = basePnrLink;
-          
+
           // Try clipboard API with fallback
-          if (navigator.clipboard && navigator.clipboard.writeText) {
+          if (
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+          ) {
             navigator.clipboard.writeText(fallbackLink).then(
               () => {
-                toast.success("📍 Live tracking link copied! (Location access denied)");
+                toast.success(
+                  "📍 Live tracking link copied! (Location access denied)",
+                );
               },
               () => {
                 fallbackCopyTextToClipboard(fallbackLink);
-              }
+              },
             );
           } else {
             fallbackCopyTextToClipboard(fallbackLink);
           }
-        }
+        },
       );
     } else {
       // Geolocation not supported
       const fallbackLink = basePnrLink;
-      
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+
+      if (
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+      ) {
         navigator.clipboard.writeText(fallbackLink).then(
           () => {
             toast.success("📍 Live tracking link copied!");
           },
           () => {
             fallbackCopyTextToClipboard(fallbackLink);
-          }
+          },
         );
       } else {
         fallbackCopyTextToClipboard(fallbackLink);
@@ -150,7 +165,7 @@ export function RealTimeTracking() {
 
   const handleSetReminder = () => {
     toast.success("⏰ Arrival reminder set!");
-    
+
     // After 5 seconds, show the arrival notification
     setTimeout(() => {
       toast.success("🚆 Your train arrives in 30 minutes!");
@@ -171,7 +186,9 @@ export function RealTimeTracking() {
       toast.success("📍 Live tracking link copied!");
     } catch (err) {
       console.error("Fallback: Oops, unable to copy", err);
-      toast.error("Unable to copy link. Please copy manually: " + text);
+      toast.error(
+        "Unable to copy link. Please copy manually: " + text,
+      );
     }
     document.body.removeChild(textArea);
   };
@@ -325,7 +342,7 @@ export function RealTimeTracking() {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            <Card className="p-6 bg-amber-50 dark:bg-amber-950">
+            <Card className="p-6 bg-white dark:bg-amber-950">
               <div className="flex items-start gap-3">
                 <AlertCircle className="h-5 w-5 text-amber-600" />
                 <div>
@@ -359,24 +376,6 @@ export function RealTimeTracking() {
               <p className="text-sm">
                 <strong>Platform:</strong> {platform}
               </p>
-            </Card>
-
-            <Card className="p-6">
-              <h5 className="mb-4">Quick Actions</h5>
-              <button
-                onClick={handleShareLocation}
-                className="p-3 w-full border rounded-lg flex items-center gap-2 hover:bg-muted"
-              >
-                <Navigation className="h-4 w-4 text-blue-500" />
-                Share Live Location
-              </button>
-              <button
-                onClick={handleSetReminder}
-                className="p-3 w-full border rounded-lg flex items-center gap-2 hover:bg-muted"
-              >
-                <Clock className="h-4 w-4 text-blue-500" />
-                Set Arrival Reminder
-              </button>
             </Card>
           </div>
         </div>
